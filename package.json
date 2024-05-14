@@ -1,0 +1,12 @@
+{
+  "name": "com.fofanius.unity-type-interface-reference",
+  "displayName": "Fofanius - Interface Reference",
+  "description": "The 'Interface Reference' package provides an additional type that allows you to reference interfaces in a scene.",
+  "version": "1.0.0",
+  "unity": "2020.3",
+  "unityRelease": "0f1",
+  "repository": {
+    "url": "https://github.com/Fofanius/unity-type-interface-reference.git",
+    "type": "git"
+  }
+}
