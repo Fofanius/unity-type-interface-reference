@@ -1,0 +1,9 @@
+{
+  "name": "com.fofanius.unity-type-interface-reference.editor",
+  "references": [
+    "GUID:06c8cf4acb1946308ab38317cde1fc71"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}
