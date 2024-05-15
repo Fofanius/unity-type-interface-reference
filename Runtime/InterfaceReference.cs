@@ -21,6 +21,12 @@ namespace Fofanius.Type
             };
         }
 
+        public bool TryGetValue(out T value)
+        {
+            value = GetValue();
+            return value is not null;
+        }
+
         public override string ToString() => $"({typeof(T).Name}) {(IsEmpty ? "NULL" : _object)}";
     }
 }
