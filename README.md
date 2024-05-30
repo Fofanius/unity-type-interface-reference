@@ -11,7 +11,7 @@ Example with version `1.0.0`:
 ```json
 {
   "dependencies": {
-    "com.fofanius.observables": "https://github.com/Fofanius/unity-type-interface-reference.git#1.0.0"
+    "com.fofanius.unity-type-interface-reference": "https://github.com/Fofanius/unity-type-interface-reference.git#1.0.0"
   }
 }
 ```
