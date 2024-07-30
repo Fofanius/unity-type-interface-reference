@@ -35,10 +35,12 @@ project.
 public class Example : MonoBehaviour
 {
     [SerializeField] private InterfaceReference<ICoolInterface> _abstractReference;
+    [SerializeField] private InterfaceReference<ICoolInterface>[] _abstractReferences;
 
     private void Start()
     {
         PerformCoolProcess(_abstractReference?.GetValue());
+        PerformCoolProcess(_abstractReferences?.FirstOrDefault()?.GetValue());
     }
     
     private void PerformCoolProcess(ICoolInterface dependency)
