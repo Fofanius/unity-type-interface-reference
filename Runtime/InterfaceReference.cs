@@ -10,6 +10,7 @@ namespace Fofanius.Type
         [SerializeField] private Object _object;
 
         public bool IsEmpty => !_object;
+        public bool HasValue => _object;
 
         public T GetValue()
         {
