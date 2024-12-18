@@ -39,7 +39,7 @@ public class Example : MonoBehaviour
 
     private void Start()
     {
-        PerformCoolProcess(_abstractReference?.GetValue());
+        PerformCoolProcess(_abstractReference.GetValueOrDefault());
         PerformCoolProcess(_abstractReferences?.FirstOrDefault()?.GetValue());
     }
     
