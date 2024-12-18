@@ -12,6 +12,11 @@ namespace Fofanius.Type
         public bool IsEmpty => !_object;
         public bool HasValue => _object;
 
+        public void SetSource(Object source)
+        {
+            _object = source;
+        }
+
         public T GetValue()
         {
             return _object switch
@@ -20,12 +25,6 @@ namespace Fofanius.Type
                 ScriptableObject scriptableObject => scriptableObject as T,
                 _ => default
             };
-        }
-
-        public bool TryGetValue(out T value)
-        {
-            value = GetValue();
-            return value is not null;
         }
 
         public override string ToString() => $"({typeof(T).Name}) {(IsEmpty ? "NULL" : _object)}";

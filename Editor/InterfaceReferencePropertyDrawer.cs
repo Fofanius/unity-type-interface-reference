@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -76,9 +77,36 @@ namespace Fofanius.Type.Editor
             EditorGUI.indentLevel++;
             if (objectProperty.objectReferenceValue)
             {
+                const float componentClarificationControlWidth = 18;
                 var targetType = objectProperty.objectReferenceValue.GetType();
+
                 GUI.color = targetType.GetInterfaces().Contains(requiredType) ? _validReferenceColor : _invalidReferenceColor;
+
+                position.width -= componentClarificationControlWidth;
                 EditorGUI.LabelField(position, $"[{requiredType.Name}] {objectProperty.objectReferenceValue.GetType().Name}");
+
+                position.x += position.width;
+                position.width = componentClarificationControlWidth;
+
+                var components = objectProperty.objectReferenceValue is Component component ? component.GetComponents(requiredType) : Array.Empty<Component>();
+                GUI.color = c;
+                if (components.Length > 1 && GUI.Button(position, new GUIContent(">", $"Choose from all components of type {requiredType.Name}")))
+                {
+                    var selectionMenu = new GenericMenu();
+
+                    selectionMenu.AddSeparator(requiredType.Name);
+                    var index = 0;
+                    foreach (var item in components)
+                    {
+                        var capturedIndex = index;
+                        selectionMenu.AddItem(new GUIContent($"#{index + 1} {item.GetType().Name}"),
+                            objectProperty.objectReferenceValue == item,
+                            () => OnComponentSelectedCapturedCallback(objectProperty, capturedIndex, components));
+                        index++;
+                    }
+
+                    selectionMenu.ShowAsContext();
+                }
             }
             else
             {
@@ -88,6 +116,16 @@ namespace Fofanius.Type.Editor
 
             EditorGUI.indentLevel--;
             GUI.color = c;
+        }
+
+        private static void OnComponentSelectedCapturedCallback(SerializedProperty objectProperty, int index, IReadOnlyList<Component> source)
+        {
+            if (objectProperty?.serializedObject is null) return;
+            if (source is null || source.Count == 0) return;
+            if (index < 0 || index >= source.Count) return;
+
+            objectProperty.objectReferenceValue = source[index];
+            objectProperty.serializedObject.ApplyModifiedProperties();
         }
     }
 }
