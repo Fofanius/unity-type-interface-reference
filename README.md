@@ -1,35 +1,11 @@
 # Interface Reference by Fofanius
 
-The `Interface Reference` package provides an additional type that allows you to reference interfaces in a scene.
-
-## Installation
-
-Just add `"com.fofanius.unity-type-interface-reference":"https://github.com/Fofanius/unity-type-interface-reference.git#VERSION"` line to your project `manifest.json` file.
-
-Example with version `1.0.0`:
-
-```json
-{
-  "dependencies": {
-    "com.fofanius.unity-type-interface-reference": "https://github.com/Fofanius/unity-type-interface-reference.git#1.0.0"
-  }
-}
-```
+The `Interface Reference` package provides an additional type that allows you to reference interfaces in your project.
 
 ## Usage
 
-With provided [wrapper type](Runtime/InterfaceReference.cs) you can easily reference to interface instance in your
+With provided [InterfaceReference<>](Runtime/InterfaceReference.cs) type you can easily reference to interface instance in your
 project.
-
-### Referencing Limitations
-
-| Instance to Usage         | MonoBehaviour | ScriptableObject |
-|---------------------------|---------------|------------------|
-| Scene Component           | +             | -                |
-| Project Prefab            | +             | +                |
-| Project Scriptable Object | +             | +                |
-
-### Usage Example
 
 ```csharp
 public class Example : MonoBehaviour
@@ -39,16 +15,46 @@ public class Example : MonoBehaviour
 
     private void Start()
     {
-        PerformCoolProcess(_abstractReference?.GetValue());
-        PerformCoolProcess(_abstractReferences?.FirstOrDefault()?.GetValue());
+        PerformCoolProcess(_abstractReference.Resolve());
+        
+        if (_abstractReferences.FirstOrDefault().TryResolve(out var output))
+        {
+            PerformCoolProcess(output);
+        }
     }
     
     private void PerformCoolProcess(ICoolInterface dependency)
     {
-        if (dependency == null) throw new ArgumentNullException(nameof(dependency));
-        
+        // ...
+        dependency.DoCoolStuff();
         // ...
     }
     
+}
+```
+
+When using [`InterfaceReferenceResolver.Resolve/TryResolve`](Runtime/InterfaceReferenceResolver.cs) you don't have to null-check `InterfaceReference<>` - this is checked inside the method for you :)
+
+### Referencing Limitations
+
+| Instance to Usage         | MonoBehaviour | ScriptableObject |
+|---------------------------|---------------|------------------|
+| Scene Component           | +             | -                |
+| Project Prefab            | + (*)         | + (*)            |
+| Project Scriptable Object | +             | +                |
+
+*(\*) attention - you are referring directly to the prefab, **not its instance.***
+
+## Installation
+
+Just add `"com.fofanius.unity-type-interface-reference":"https://github.com/Fofanius/unity-type-interface-reference.git#VERSION"` line to your project `manifest.json` file.
+
+Example with version `1.1.0`:
+
+```json
+{
+  "dependencies": {
+    "com.fofanius.unity-type-interface-reference": "https://github.com/Fofanius/unity-type-interface-reference.git#1.1.0"
+  }
 }
 ```
